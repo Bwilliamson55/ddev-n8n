@@ -1,51 +1,50 @@
-[![tests](https://github.com/ddev/ddev-addon-template/actions/workflows/tests.yml/badge.svg)](https://github.com/ddev/ddev-addon-template/actions/workflows/tests.yml) ![project is maintained](https://img.shields.io/maintenance/yes/2024.svg)
+[![tests](https://github.com/bwilliamson55/ddev-n8n/actions/workflows/tests.yml/badge.svg)](https://github.com/bwilliamson55/ddev-n8n/actions/workflows/tests.yml) ![project is maintained](https://img.shields.io/maintenance/yes/2024.svg)
 
-# ddev-addon-template <!-- omit in toc -->
+# DDEV Add-On: n8n.io
 
-* [What is ddev-addon-template?](#what-is-ddev-addon-template)
-* [Components of the repository](#components-of-the-repository)
-* [Getting started](#getting-started)
+A DDEV add-on that includes n8n.io already configured for use.
 
-## What is ddev-addon-template?
+## Description
 
-This repository is a template for providing [DDEV](https://ddev.readthedocs.io) add-ons and services.
+This repository provides a DDEV add-on that integrates [n8n.io](https://n8n.io) into your DDEV project. n8n.io is a free and open-source workflow automation tool that enables you to connect various services and automate tasks using a visual workflow editor.
 
-In DDEV addons can be installed from the command line using the `ddev get` command, for example, `ddev get ddev/ddev-addon-template` or `ddev get ddev/ddev-drupal9-solr`.
+By default, the n8n.io instance can be accessed at `n8n.<projectName>.ddev.site`, either over HTTP or HTTPS.
 
-A repository like this one is the way to get started. You can create a new repo from this one by clicking the template button in the top right corner of the page.
+To access the n8n.io interface, refer to the [n8n.io documentation](https://docs.n8n.io) for instructions on how to use and configure workflows. Note that the specific URL for accessing n8n.io will depend on your DDEV project name.
 
-![template button](images/template-button.png)
+Authentication for n8n.io can be configured using different methods [as explained in the n8n.io docs](https://docs.n8n.io/hosting/authentication/). By default, the repository includes an `.env` file that contains the username and password declarations for basic http authentication.
 
-## Components of the repository
+## Usage
 
-* The fundamental contents of the add-on service or other component. For example, in this template there is a [docker-compose.addon-template.yaml](docker-compose.addon-template.yaml) file.
-* An [install.yaml](install.yaml) file that describes how to install the service or other component.
-* A test suite in [test.bats](tests/test.bats) that makes sure the service continues to work as expected.
-* [Github actions setup](.github/workflows/tests.yml) so that the tests run automatically when you push to the repository.
+To use this DDEV add-on and integrate n8n.io into your DDEV project, follow these steps:
 
-## Getting started
+1. Install and set up DDEV on your local machine following the [DDEV documentation](https://ddev.readthedocs.io).
+2. In your DDEV project directory, add this project as an add-on by running the following command:  
+ `ddev get bwilliamson55/ddev-n8n`  
+This command will clone the `bwilliamson55/ddev-n8n` repository and integrate it into your DDEV project.
+3. Start your DDEV project using the `ddev start` command, or restart it with `ddev restart`
+4. Access the n8n.io interface by visiting `n8n.<projectName>.ddev.site` in your web browser, replacing `<projectName>` with the name of your DDEV project.
+5. Follow the [n8n.io documentation](https://docs.n8n.io/) to create and configure workflows according to your needs.
 
-1. Choose a good descriptive name for your add-on. It should probably start with "ddev-" and include the basic service or functionality. If it's particular to a specific CMS, perhaps `ddev-<CMS>-servicename`.
-2. Create the new template repository by using the template button.
-3. Globally replace "addon-template" with the name of your add-on.
-4. Add the files that need to be added to a ddev project to the repository. For example, you might remove `docker-compose.addon-template.yaml` with the `docker-compose.*.yaml` for your recipe.
-5. Update the install.yaml to give the necessary instructions for installing the add-on.
+The docker-compose.ddev-n8n.yaml file contains a fairly thorough configuration through environment variables. This is certainly not a one size fits all configuration. You can override any of these variables in your project's .ddev/docker-compose.n8n.yaml file and or map them to .env variables. Refer to the [n8n environment variable documentation](https://docs.n8n.io/hosting/environment-variables/environment-variables/) if you would like to more.
 
-   * The fundamental line is the `project_files` directive, a list of files to be copied from this repo into the project `.ddev` directory.
-   * You can optionally add files to the `global_files` directive as well, which will cause files to be placed in the global `.ddev` directory, `~/.ddev`.
-   * Finally, `pre_install_commands` and `post_install_commands` are supported. These can use the host-side environment variables documented [in ddev docs](https://ddev.readthedocs.io/en/stable/users/extend/custom-commands/#environment-variables-provided).
+n8n also supports [file based variables, so you can safely integrate secrets](https://docs.n8n.io/hosting/environment-variables/configuration-methods/#keeping-sensitive-data-in-separate-files). This is normally used for cloud provider secrets, but can be used for any secret.
+## Contributing
 
-6. Update `tests/test.bats` to provide a reasonable test for your repository. Tests are triggered either by manually executing `bats ./tests/test.bat`, automatically on every push to the repository, or periodically each night. Please make sure to attend to test failures when they happen. Others will be depending on you. `bats` is a simple testing framework that just uses `bash`. To run a Bats test locally, you have to [install bats-core](https://bats-core.readthedocs.io/en/stable/installation.html) first. Then you download your add-on, and finally run `bats ./tests/test.bats` within the root of the uncompressed directory. To learn more about Bats see the [documentation](https://bats-core.readthedocs.io/en/stable/).
-7. When everything is working, including the tests, you can push the repository to GitHub.
-8. Create a release on GitHub.
-9. Test manually with `ddev get <owner/repo>`.
-10. You can test PRs with `ddev get https://github.com/<user>/<repo>/tarball/<branch>`
-11. Update the README.md to describe the add-on, how to use it, and how to contribute. If there are any manual actions that have to be taken, please explain them. If it requires special configuration of the using project, please explain how to do those. Examples in [ddev/ddev-drupal9-solr](https://github.com/ddev/ddev-drupal9-solr), [ddev/ddev-memcached](github.com/ddev/ddev-memcached), and [ddev/ddev-beanstalkd](https://github.com/ddev/ddev-beanstalkd).
-12. Add a good short description to your repo, and add the label "ddev-get". It will immediately be added to the list provided by `ddev get --list --all`.
-13. When it has matured you will hopefully want to have it become an "official" maintained add-on. Open an issue in the [ddev queue](https://github.com/ddev/ddev/issues) for that.
+Contributions to this DDEV add-on are welcome! If you'd like to contribute, please follow these guidelines:
 
-Note that more advanced techniques are discussed in [DDEV docs](https://ddev.readthedocs.io/en/latest/users/extend/additional-services/#additional-service-configurations-and-add-ons-for-ddev).
+1. Fork the repository on GitHub.
+2. Create a new branch for your feature or bug fix.
+3. Make your modifications and commit your changes.
+4. Push your changes to your forked repository.
+5. Submit a pull request with a clear description of your changes.
 
-**Contributed and maintained by [@CONTRIBUTOR](https://github.com/CONTRIBUTOR) based on the original [ddev-contrib recipe](https://github.com/ddev/ddev-contrib/tree/master/docker-compose-services/RECIPE) by [@CONTRIBUTOR](https://github.com/CONTRIBUTOR)**
+If you encounter any issues or have suggestions for improvements, please open an issue on the GitHub repository.
 
-**Originally Contributed by [somebody](https://github.com/somebody) in <https://github.com/ddev/ddev-contrib/>
+## Additional Configuration and Actions
+
+[DDEV lifecycle hooks](https://ddev.readthedocs.io/en/latest/users/configuration/hooks/) can be used to perform additional actions related to n8n.io automatically. For example, you can use the hooks to backup, import, export, start, or stop n8n.io workflows every time your project starts or stops. Refer to the [n8n CLI documentation](https://docs.n8n.io/hosting/cli-commands/) for more information on available CLI commands and actions.
+
+---
+
+Feel free to customize and expand upon this readme as needed for your specific DDEV add-on repository.
