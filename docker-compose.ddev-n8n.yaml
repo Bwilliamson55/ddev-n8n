@@ -8,20 +8,22 @@ services:
     command: n8n start
     networks: [default, ddev_default]
     restart: "always"
-    ports:
-      - "5678:5678"
+    expose:
+      - "5678"
     # See https://docs.n8n.io/hosting/environment-variables/environment-variables/ for more information
     # See https://docs.n8n.io/hosting/environment-variables/configuration-methods/#keeping-sensitive-data-in-separate-files for alternate secret storage
     environment:
-      - DDEV_HOSTNAME=ddev-n8n
+      - VIRTUAL_HOST=${SUBDOMAIN}.${DDEV_HOSTNAME}
+      - HTTPS_EXPOSE=443:5678
+      - HTTP_EXPOSE=80:5678
       - N8N_BASIC_AUTH_ACTIVE=true
       - N8N_BASIC_AUTH_USER
       - N8N_BASIC_AUTH_PASSWORD
-      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_HOST=${SUBDOMAIN}.${DDEV_HOSTNAME}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - NODE_ENV=production
-      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DDEV_SITENAME}/
       - N8N_ENDPOINT_WEBHOOK
       - N8N_ENDPOINT_WEBHOOK_TEST
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
@@ -48,8 +50,10 @@ services:
       - N8N_HIDE_USAGE_PAGE=true
     # These labels ensure this service is discoverable by ddev.
     labels:
-      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.site-name: ${SUBDOMAIN}.${DDEV_SITENAME}
       com.ddev.approot: $DDEV_APPROOT
+    depends_on:
+      - web
     links:
       - web
     volumes:

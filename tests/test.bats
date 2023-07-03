@@ -15,7 +15,7 @@ setup() {
 health_checks() {
   ddev describe
   AUTH=$(echo -ne "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" | base64 --wrap 0)
-  curl -v --fail -H "Authorization: Basic ${AUTH}" http://127.0.0.1:5678
+  curl -v --fail -H "Authorization: Basic ${AUTH}" http://${SUBDOMAIN}.${PROJNAME}.ddev.site/
 }
 
 teardown() {
