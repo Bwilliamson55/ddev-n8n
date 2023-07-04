@@ -4,6 +4,11 @@
 
 A DDEV add-on that includes n8n.io already configured for use.
 
+## ⚠️ Notice
+
+When using n8n.io inside DDEV, the web container's API endpoint will be `http://web`, not `http://<yourProjectFQDN>`. For example, for a project with the URL `http://magento.ddev.site`, the API endpoint from n8n.io would be seen as `http://web`. Please keep this in mind when configuring your workflows.
+
+
 ## Description
 
 This repository provides a DDEV add-on that integrates [n8n.io](https://n8n.io) into your DDEV project. n8n.io is a free and open-source workflow automation tool that enables you to connect various services and automate tasks using a visual workflow editor.
